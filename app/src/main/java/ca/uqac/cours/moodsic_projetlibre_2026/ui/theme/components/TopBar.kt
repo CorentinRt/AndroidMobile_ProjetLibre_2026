@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ca.uqac.cours.moodsic_projetlibre_2026.R
 
 @Preview(showBackground = true)
 @Composable
@@ -55,21 +57,24 @@ fun TopBarApp(
 
         Text(
             modifier = Modifier.weight(1f).padding(start = 24.dp),
-            text = getTitlePageByDestination(
-                destination = currentLocation
-            ),
+            text = stringResource(
+                    id = getTitlePageIDByDestination(
+                        destination = currentLocation
+                    )
+                ),
             textAlign = TextAlign.Center,
         )
     }
 }
 
-fun getTitlePageByDestination(destination: String): String
+fun getTitlePageIDByDestination(destination: String): Int
 {
-    /*
     when (destination){
-
+        "home" -> return R.string.title_home
+        "new_share" -> return R.string.title_new_share
+        "user_infos" -> return R.string.title_user_infos
+        "settings" -> return R.string.title_settings
     }
-    */
 
-    return ""
+    return R.string.app_name
 }

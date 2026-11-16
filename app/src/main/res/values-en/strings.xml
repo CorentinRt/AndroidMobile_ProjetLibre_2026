@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Moodsic</string>
+
+    // Title Pages Top Bar
+    <string name="title_home">Moodsic</string>
+    <string name="title_new_share">Mood</string>
+    <string name="title_user_infos">User</string>
+    <string name="title_settings">Settings</string>
+
+</resources>

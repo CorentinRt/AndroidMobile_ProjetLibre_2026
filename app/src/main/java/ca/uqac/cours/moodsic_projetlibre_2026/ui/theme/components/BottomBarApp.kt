@@ -11,7 +11,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import ca.uqac.cours.moodsic_projetlibre_2026.R
 
 @Preview(showBackground = true)
 @Composable
@@ -39,7 +42,10 @@ fun BottomBarApp(
                 )
             },
             label = {
-                Text(text = "Home")
+                Text(
+                    text = stringResource(R.string.title_home),
+                    fontSize = 14.sp
+                )
             }
         )
 
@@ -56,7 +62,10 @@ fun BottomBarApp(
                 )
             },
             label = {
-                Text(text = "Share")
+                Text(
+                    text = stringResource(R.string.title_new_share),
+                    fontSize = 14.sp
+                )
             }
         )
 
@@ -73,7 +82,10 @@ fun BottomBarApp(
                 )
             },
             label = {
-                Text(text = "User")
+                Text(
+                    text = stringResource(R.string.title_user_infos),
+                    fontSize = 14.sp
+                )
             }
         )
 
@@ -90,7 +102,10 @@ fun BottomBarApp(
                 )
             },
             label = {
-                Text(text = "Settings")
+                Text(
+                    text = stringResource(R.string.title_settings),
+                    fontSize = 14.sp
+                )
             }
         )
     }
