@@ -11,6 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 fun ScaffoldApp(
     modifier: Modifier = Modifier,
     onGoToHomeClicked: () -> Unit = {},
+    onGoToNewShareClicked: () -> Unit = {},
+    onGoToUserInfosClicked: () -> Unit = {},
     onGoToSettingsClicked: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit = {}
 ){
@@ -22,6 +24,12 @@ fun ScaffoldApp(
             BottomBarApp(
                 onGoToHomeClicked = {
                     onGoToHomeClicked()
+                },
+                onGoToNewShareClicked = {
+                    onGoToNewShareClicked()
+                },
+                onGoToUserInfosClicked = {
+                    onGoToUserInfosClicked()
                 },
                 onGoToSettingsClicked = {
                     onGoToSettingsClicked()

@@ -10,7 +10,9 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 fun HomeScreen(
     modifier: Modifier = Modifier
 ){
-
+    HomeScreenContent(
+        modifier = modifier
+    )
 }
 
 @Preview(showBackground = true)
