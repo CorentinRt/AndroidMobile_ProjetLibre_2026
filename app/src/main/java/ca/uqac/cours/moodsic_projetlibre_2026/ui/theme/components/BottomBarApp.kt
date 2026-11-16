@@ -2,6 +2,7 @@ package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -46,7 +47,7 @@ fun BottomBarApp(
             },
             icon = {
                 Icon(
-                    Icons.Default.Home,
+                    Icons.Default.Settings,
                     contentDescription = "Settings Icon"
                 )
             },
