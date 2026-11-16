@@ -34,6 +34,9 @@ fun MoodSicApp(
         },
         onGoToSettingsClicked = {
             navController.navigate("settings")
+        },
+        onGoBackClicked = {
+            navController.popBackStack()
         }
     ){
         innerPadding ->

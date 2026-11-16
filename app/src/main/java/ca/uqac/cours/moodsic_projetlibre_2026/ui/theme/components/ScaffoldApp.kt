@@ -14,11 +14,17 @@ fun ScaffoldApp(
     onGoToNewShareClicked: () -> Unit = {},
     onGoToUserInfosClicked: () -> Unit = {},
     onGoToSettingsClicked: () -> Unit = {},
+    onGoBackClicked: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit = {}
 ){
     Scaffold(
+        modifier = modifier,
         topBar = {
-            TopBarApp()
+            TopBarApp(
+                onGoBackClicked = {
+                    onGoBackClicked()
+                }
+            )
         },
         bottomBar = {
             BottomBarApp(
