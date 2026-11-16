@@ -8,16 +8,43 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.Moodsic_ProjetLibre_2026Theme
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.navigation.MoodSicApp
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.SettingsViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         enableEdgeToEdge()
+
         setContent {
-            Moodsic_ProjetLibre_2026Theme {
+
+            val context = LocalContext.current
+
+            val settingsViewModel: SettingsViewModel = viewModel(
+                factory = viewModelFactory {
+                    initializer {
+                        SettingsViewModel(
+                            context = context
+                        )
+                    }
+                }
+            )
+
+            val nightMode by settingsViewModel.nightMode.collectAsState()
+
+            Moodsic_ProjetLibre_2026Theme(
+                darkTheme = nightMode
+            ) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
                     MoodSicApp(
