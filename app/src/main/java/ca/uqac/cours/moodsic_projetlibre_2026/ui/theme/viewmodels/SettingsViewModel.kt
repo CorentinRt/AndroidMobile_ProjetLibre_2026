@@ -21,9 +21,9 @@ class SettingsViewModel(context: Context): ViewModel() {
             initialValue = false
         )
 
-    fun defineNightMode(night: Boolean) {
+    fun defineNightMode(nightMode: Boolean) {
         viewModelScope.launch {
-            settingsDataStore.defineNightMode(night)
+            settingsDataStore.defineNightMode(nightMode)
         }
     }
 }

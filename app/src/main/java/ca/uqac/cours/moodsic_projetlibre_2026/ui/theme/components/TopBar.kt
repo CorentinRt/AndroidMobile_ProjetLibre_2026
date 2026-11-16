@@ -2,12 +2,10 @@ package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -16,9 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 
 @Preview(showBackground = true)
@@ -56,13 +56,15 @@ fun TopBarApp(
         )
 
         Text(
-            modifier = Modifier.weight(1f).padding(start = 24.dp),
+            modifier = Modifier.weight(1f).padding(start = 20.dp),
             text = stringResource(
                     id = getTitlePageIDByDestination(
                         destination = currentLocation
                     )
                 ),
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Right,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }

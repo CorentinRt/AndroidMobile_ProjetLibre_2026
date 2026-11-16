@@ -4,7 +4,10 @@
     // Title Pages Top Bar
     <string name="title_home">Moodsic</string>
     <string name="title_new_share">Mood</string>
-    <string name="title_user_infos">User</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_user_infos">Utilisateur</string>
+    <string name="title_settings">Paramètres</string>
+
+    // Settings
+    <string name="settings_nightmode">Mode Nuit</string>
 
 </resources>

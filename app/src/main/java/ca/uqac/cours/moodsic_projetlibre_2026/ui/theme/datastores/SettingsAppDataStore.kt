@@ -12,16 +12,16 @@ val Context.settingsAppDataStore by preferencesDataStore(
 )
 
 class SettingsAppDataStore(private val context: Context) {
-    private val NIGHT_KEY = booleanPreferencesKey("night_mode")
+    private val NIGHT_MODE_KEY = booleanPreferencesKey("night_mode")
 
     val nightMode: Flow<Boolean> =
         context.settingsAppDataStore.data.map { preferences ->
-            preferences[NIGHT_KEY] ?: false
+            preferences[NIGHT_MODE_KEY] ?: false
         }
 
     suspend fun defineNightMode(night: Boolean) {
         context.settingsAppDataStore.edit { preferences ->
-            preferences[NIGHT_KEY] = night
+            preferences[NIGHT_MODE_KEY] = night
         }
     }
 }

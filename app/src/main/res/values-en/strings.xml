@@ -8,4 +8,7 @@
     <string name="title_user_infos">User</string>
     <string name="title_settings">Settings</string>
 
+    // Settings
+    <string name="settings_nightmode">Night Mode</string>
+
 </resources>
