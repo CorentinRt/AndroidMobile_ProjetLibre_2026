@@ -1,0 +1,58 @@
+package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+
+@Preview(showBackground = true)
+@Composable
+fun BottomBarApp(
+    modifier: Modifier = Modifier,
+    currentLocation: String = "home",
+    onGoToHomeClicked: () -> Unit = {},
+    onGoToSettingsClicked: () -> Unit = {}
+){
+    NavigationBar(
+        modifier = modifier
+    ){
+        // Home Item
+        NavigationBarItem(
+            selected = currentLocation == "home",
+            onClick = {
+                onGoToHomeClicked()
+            },
+            icon = {
+                Icon(
+                    Icons.Default.Home,
+                    contentDescription = "Home Icon"
+                )
+            },
+            label = {
+                Text(text = "Home")
+            }
+        )
+
+        // Settings Item
+        NavigationBarItem(
+            selected = currentLocation == "settings",
+            onClick = {
+                onGoToSettingsClicked()
+            },
+            icon = {
+                Icon(
+                    Icons.Default.Home,
+                    contentDescription = "Settings Icon"
+                )
+            },
+            label = {
+                Text(text = "Settings")
+            }
+        )
+    }
+}
