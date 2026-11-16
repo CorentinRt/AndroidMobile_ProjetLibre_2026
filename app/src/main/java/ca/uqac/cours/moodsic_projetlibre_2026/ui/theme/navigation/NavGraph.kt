@@ -2,11 +2,13 @@ package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.HomeScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareScreen
@@ -21,19 +23,30 @@ fun MoodSicApp(
 ){
     val navController = rememberNavController()
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val homeRoute = "home"
+    val newShareRoute = "new_share"
+    val userInfosRoute = "user_infos"
+    val settingsRoute = "settings"
+
     ScaffoldApp(
         modifier = modifier,
+        currentDestination =
+            if (currentRoute != null) currentRoute else homeRoute,
         onGoToHomeClicked = {
-            navController.navigate("home")
+            navController.navigate(homeRoute)
         },
         onGoToNewShareClicked = {
-            navController.navigate("new_share")
+            navController.navigate(newShareRoute)
         },
         onGoToUserInfosClicked = {
-            navController.navigate("user_infos")
+            navController.navigate(userInfosRoute)
         },
         onGoToSettingsClicked = {
-            navController.navigate("settings")
+            navController.navigate(settingsRoute)
         },
         onGoBackClicked = {
             navController.popBackStack()

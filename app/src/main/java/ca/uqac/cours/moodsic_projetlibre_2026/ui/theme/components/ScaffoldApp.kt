@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun ScaffoldApp(
     modifier: Modifier = Modifier,
+    currentDestination: String = "home",
     onGoToHomeClicked: () -> Unit = {},
     onGoToNewShareClicked: () -> Unit = {},
     onGoToUserInfosClicked: () -> Unit = {},
@@ -21,6 +22,7 @@ fun ScaffoldApp(
         modifier = modifier,
         topBar = {
             TopBarApp(
+                currentDestination = currentDestination,
                 onGoBackClicked = {
                     onGoBackClicked()
                 }
@@ -28,6 +30,7 @@ fun ScaffoldApp(
         },
         bottomBar = {
             BottomBarApp(
+                currentDestination = currentDestination,
                 onGoToHomeClicked = {
                     onGoToHomeClicked()
                 },

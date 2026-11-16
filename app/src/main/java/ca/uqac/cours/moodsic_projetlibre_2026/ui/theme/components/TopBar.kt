@@ -25,7 +25,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.R
 @Composable
 fun TopBarApp(
     modifier: Modifier = Modifier,
-    currentLocation: String = "home",
+    currentDestination: String = "home",
     onGoBackClicked: () -> Unit = {}
 ){
     Row(
@@ -59,7 +59,7 @@ fun TopBarApp(
             modifier = Modifier.weight(1f).padding(start = 20.dp),
             text = stringResource(
                     id = getTitlePageIDByDestination(
-                        destination = currentLocation
+                        destination = currentDestination
                     )
                 ),
             textAlign = TextAlign.Right,

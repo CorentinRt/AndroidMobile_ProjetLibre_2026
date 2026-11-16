@@ -20,7 +20,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.R
 @Composable
 fun BottomBarApp(
     modifier: Modifier = Modifier,
-    currentLocation: String = "home",
+    currentDestination: String = "home",
     onGoToHomeClicked: () -> Unit = {},
     onGoToNewShareClicked: () -> Unit = {},
     onGoToUserInfosClicked: () -> Unit = {},
@@ -31,7 +31,7 @@ fun BottomBarApp(
     ){
         // Home Item
         NavigationBarItem(
-            selected = currentLocation == "home",
+            selected = currentDestination == "home",
             onClick = {
                 onGoToHomeClicked()
             },
@@ -51,7 +51,7 @@ fun BottomBarApp(
 
         // New Share Item
         NavigationBarItem(
-            selected = currentLocation == "new_share",
+            selected = currentDestination == "new_share",
             onClick = {
                 onGoToNewShareClicked()
             },
@@ -71,7 +71,7 @@ fun BottomBarApp(
 
         // User Infos Item
         NavigationBarItem(
-            selected = currentLocation == "user_infos",
+            selected = currentDestination == "user_infos",
             onClick = {
                 onGoToUserInfosClicked()
             },
@@ -91,7 +91,7 @@ fun BottomBarApp(
 
         // Settings Item
         NavigationBarItem(
-            selected = currentLocation == "settings",
+            selected = currentDestination == "settings",
             onClick = {
                 onGoToSettingsClicked()
             },
