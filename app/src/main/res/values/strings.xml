@@ -10,4 +10,8 @@
     // Settings
     <string name="settings_nightmode">Mode Nuit</string>
 
+    // New Share Screen
+    <string name="new_share_screen_starttakingpicture">Prendre un photo</string>
+    <string name="new_share_screen_nopicturetook">Aucune photo prise</string>
+
 </resources>
