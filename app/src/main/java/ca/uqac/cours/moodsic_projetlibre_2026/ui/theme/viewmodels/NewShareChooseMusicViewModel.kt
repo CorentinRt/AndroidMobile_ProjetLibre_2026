@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 
-class NewShareChooseMusicViewModel(context: Context): ViewModel() {
+class NewShareChooseMusicViewModel: ViewModel() {
 
     var searchText by mutableStateOf("")
         private set
