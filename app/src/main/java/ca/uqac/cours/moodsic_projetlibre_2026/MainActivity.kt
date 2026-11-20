@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
                     MoodSicApp(
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
                         startingPage = "home"
                     )
                 }
