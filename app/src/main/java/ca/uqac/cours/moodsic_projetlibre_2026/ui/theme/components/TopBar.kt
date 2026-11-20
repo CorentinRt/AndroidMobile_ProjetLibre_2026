@@ -1,9 +1,12 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
@@ -25,7 +28,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.R
 @Composable
 fun TopBarApp(
     modifier: Modifier = Modifier,
-    currentDestination: String = "home",
+    currentDestination: String = "user_infos",
     onGoBackClicked: () -> Unit = {}
 ){
     Row(
@@ -38,10 +41,12 @@ fun TopBarApp(
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Button(
-            modifier = Modifier.weight(1f).padding(end = 36.dp),
+            modifier = Modifier.weight(2f)
+                .padding(end = 36.dp),
             onClick = {
                 onGoBackClicked()
-            }
+            },
+            shape = RoundedCornerShape(4.dp)
         ){
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -56,7 +61,8 @@ fun TopBarApp(
         )
 
         Text(
-            modifier = Modifier.weight(1f).padding(start = 20.dp),
+            modifier = Modifier.weight(2f)
+                .padding(start = 20.dp),
             text = stringResource(
                     id = getTitlePageIDByDestination(
                         destination = currentDestination

@@ -1,6 +1,5 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
