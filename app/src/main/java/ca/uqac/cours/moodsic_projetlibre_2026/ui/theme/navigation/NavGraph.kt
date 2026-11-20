@@ -26,6 +26,7 @@ fun MoodSicApp(
     modifier: Modifier = Modifier,
     startingPage: String = "home"
 ){
+
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

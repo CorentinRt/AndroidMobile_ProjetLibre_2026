@@ -1,6 +1,7 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,34 +13,95 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerApi
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
+import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 
 @Composable
 fun NewShareChooseMusicScreen(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
-    onConfirmChooseMusicClicked: () -> Unit = {}
+    onConfirmChooseMusicClicked: (DeezerTrack) -> Unit = {}
 ) {
+    var searchText by remember { mutableStateOf("") }
+    var tracks by remember { mutableStateOf<List<DeezerTrack>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var selectedTrack by remember { mutableStateOf<DeezerTrack?>(null) }
+
+    LaunchedEffect(searchText) {
+
+        if (searchText.isBlank()) {
+            tracks = emptyList()
+            return@LaunchedEffect
+        }
+
+        delay(timeMillis = 500)
+
+        isLoading = true
+        errorMessage = null
+
+        try {
+            val response = DeezerApi.DeezerClient.api.searchTracks(searchText)
+            tracks = response.data
+        } catch (e: Exception) {
+            tracks = emptyList()
+            errorMessage = "Can't get results !"
+        } finally {
+            isLoading = false
+        }
+    }
+
     NewShareChooseMusicContent(
         modifier = modifier,
         photoUri = photoUri,
+        isLoading = isLoading,
+        errorMessage = errorMessage,
+        tracks = tracks,
+        selectedTrack = selectedTrack,
+        onReceiveUpdateSearchText = { newText ->
+            Log.d("AAAA", "before Callback parent appelée : $newText")
+            searchText = newText
+            Log.d("AAAA", "after Callback parent appelée : $newText")
+        },
+        searchText = searchText,
         onConfirmChooseMusicClicked = {
-            onConfirmChooseMusicClicked()
+            if (selectedTrack != null){
+                onConfirmChooseMusicClicked(selectedTrack!!)
+            }
+        },
+        onSelectTrack = {
+            selectedTrack = it
         }
     )
 }
@@ -59,7 +121,14 @@ fun NewShareChooseMusicScreenPreview() {
 fun NewShareChooseMusicContent(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
-    onConfirmChooseMusicClicked: () -> Unit = {}
+    isLoading: Boolean = false,
+    errorMessage: String? = "",
+    tracks: List<DeezerTrack> = emptyList(),
+    selectedTrack: DeezerTrack? = null,
+    onReceiveUpdateSearchText: (String) -> Unit = {},
+    searchText: String = "",
+    onConfirmChooseMusicClicked: () -> Unit = {},
+    onSelectTrack: (DeezerTrack) -> Unit = {}
 ){
     Box(
         modifier = modifier
@@ -76,7 +145,16 @@ fun NewShareChooseMusicContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
-                    .weight(1f)
+                    .weight(1f),
+                isLoading = isLoading,
+                errorMessage = errorMessage,
+                tracks = tracks,
+                selectedTrack = selectedTrack,
+                onUpdateSearchText = onReceiveUpdateSearchText,
+                searchText = searchText,
+                onSelectTrack = {
+                    onSelectTrack(it)
+                }
             )
 
             PhotoTakenPrevisualisation(
@@ -110,7 +188,14 @@ fun NewShareChooseMusicContent(
 @Preview(showBackground = true)
 @Composable
 fun ChooseMusicContainer(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    errorMessage: String? = "",
+    tracks: List<DeezerTrack> = emptyList(),
+    selectedTrack: DeezerTrack? = null,
+    onUpdateSearchText: (String) -> Unit = {},
+    searchText: String = "",
+    onSelectTrack: (DeezerTrack) -> Unit = {}
 ){
     Box(
         modifier = modifier
@@ -124,6 +209,103 @@ fun ChooseMusicContainer(
                 RoundedCornerShape(12.dp)
             )
     ){
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
 
+            Text(
+                text = "Choose your music",
+                style = MaterialTheme.typography.headlineSmall
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            TextField(
+                value = searchText,
+                onValueChange = onUpdateSearchText,
+                label = {
+                    Text(
+                        text = "Title or artist"
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+
+            Text(
+                text = "Value : $searchText",
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (isLoading) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            errorMessage?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
+            selectedTrack?.let {
+                Text(
+                    text = "Selection : ${it.title} - ${it.artist.name}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+
+                items(
+                    items = tracks,
+                    key = { it.id }
+                ) { track ->
+
+                    ListItem(
+                        headlineContent = {
+                            Text(track.title)
+                        },
+                        supportingContent = {
+                            Text(track.artist.name)
+                        },
+                        leadingContent = {
+                            AsyncImage(
+                                model = track.album.cover,
+                                contentDescription = "Album Cover",
+                                modifier = Modifier.size(56.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        trailingContent = {
+                            TextButton(
+                                onClick = {
+                                    onSelectTrack(track)
+                                }
+                            ) {
+                                Text(
+                                    if (selectedTrack?.id == track.id)
+                                        "Chose"
+                                    else
+                                        "Choose"
+                                )
+                            }
+                        }
+                    )
+
+                    HorizontalDivider()
+                }
+            }
+        }
     }
 }
