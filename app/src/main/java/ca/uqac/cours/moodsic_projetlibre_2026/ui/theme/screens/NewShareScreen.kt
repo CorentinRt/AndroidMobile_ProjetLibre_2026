@@ -24,6 +24,8 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +50,7 @@ import java.io.File
 @Composable
 fun NewShareScreen(
     modifier: Modifier = Modifier
-){
+) {
     NewShareContent(
         modifier = modifier
     )
@@ -56,9 +58,8 @@ fun NewShareScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun NewShareScreenPreview(){
-    ScaffoldApp(){
-            innerPadding ->
+fun NewShareScreenPreview() {
+    ScaffoldApp() { innerPadding ->
         NewShareContent(modifier = Modifier.padding(innerPadding))
     }
 }
@@ -67,7 +68,7 @@ fun NewShareScreenPreview(){
 @Composable
 fun NewShareContent(
     modifier: Modifier = Modifier
-){
+) {
     val context = LocalContext.current
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
@@ -75,8 +76,7 @@ fun NewShareContent(
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
-    ){
-        success ->
+    ) { success ->
 
         if (success) {
             photoUri = cameraUri
@@ -101,7 +101,7 @@ fun NewShareContent(
             cameraLauncher.launch(uri)
 
         } catch (e: Exception) {
-            Log.d("NEW_SHARE_SCREEN" , e.message, e);
+            Log.d("NEW_SHARE_SCREEN", e.message, e);
         }
     }
 
@@ -111,22 +111,65 @@ fun NewShareContent(
             .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        PhotoTakenPrevisualisation(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .clip(RoundedCornerShape(24.dp))
+                .weight(1f),
+            photoUri = photoUri
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        if (photoUri != null) {
+
+            PhotoTakenActionsButtons(
+                modifier = Modifier.fillMaxWidth(),
+                onRestartPhotoClicked = {
+                    photoUri?.let { uri ->
+                        photoUri = null
+                        openCamera()
+                    }
+                },
+                onConfirmPhotoClicked = {
+                    photoUri?.let { uri ->
+                        //onPhotoConfirmed(uri)
+                    }
+                }
+            )
+
+        } else {
+
+            PhotoNotTakenYetActionsButtons(
+                modifier = Modifier.fillMaxWidth(),
+                onOpenCameraClicked = {
+                    openCamera()
+                }
+            )
+
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PhotoTakenPrevisualisation(
+    modifier: Modifier = Modifier,
+    photoUri: Uri? = null
+){
+        Box(
+            modifier = modifier
+                .clip(RoundedCornerShape(12.dp))
                 .background(
                     MaterialTheme.colorScheme.surfaceVariant
                 )
                 .border(
                     1.dp,
                     MaterialTheme.colorScheme.outline,
-                    RoundedCornerShape(24.dp)
+                    RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
-            if (photoUri != null){
+            if (photoUri != null) {
                 AsyncImage(
                     model = photoUri,
                     contentDescription = "Recap Photo",
@@ -140,49 +183,80 @@ fun NewShareContent(
                 )
             }
         }
+}
 
-        Spacer(modifier = Modifier.height(24.dp))
+@Preview(showBackground = true)
+@Composable
+fun PhotoTakenActionsButtons(
+    modifier: Modifier = Modifier,
+    onRestartPhotoClicked: () -> Unit = {},
+    onConfirmPhotoClicked: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround,
+    ) {
+        IconButton(
+            onClick = {
+                onRestartPhotoClicked()
+            },
+            modifier = Modifier.size(80.dp),
+            colors = IconButtonDefaults.filledIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
+            ),
+            shape = CircleShape
+        ) {
+            Icon(
+                imageVector = Icons.Default.AddCircle,
+                contentDescription = "Restart Photo"
+            )
+        }
 
-        if (photoUri != null){
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ){
-                IconButton(
-                    onClick = {
-                        photoUri?.let { uri ->
-                            photoUri = null
-                            openCamera()
-                        }
-                    },
-                    modifier = Modifier.weight(1f)
-                ){
-                    Icon(
-                        imageVector = Icons.Default.AddCircle,
-                        contentDescription = "Restart Photo"
-                    )
-                }
+        IconButton(
+            onClick = {
+                onConfirmPhotoClicked()
+            },
+            modifier = Modifier.size(80.dp),
+            colors = IconButtonDefaults.filledIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
+            ),
+            shape = CircleShape
+        ) {
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = "Confirm Photo"
+            )
+        }
+    }
+}
 
-                IconButton(
-                    onClick = {
-                        photoUri?.let { uri ->
-                            //onPhotoConfirmed(uri)
-                        }
-                    },
-                    modifier = Modifier.weight(1f)
-                ){
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Confirm Photo"
-                    )
-                }
-            }
-        } else {
+@Preview(showBackground = true)
+@Composable
+fun PhotoNotTakenYetActionsButtons(
+    modifier: Modifier = Modifier,
+    onOpenCameraClicked: () -> Unit = {}
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             IconButton(
-                onClick = { openCamera() },
+                onClick = {
+                    onOpenCameraClicked()
+                },
                 modifier = Modifier.size(80.dp),
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
                 shape = CircleShape,
-            ){
+            ) {
                 Icon(
                     imageVector = Icons.Default.Phone,
                     contentDescription = "Capture"
