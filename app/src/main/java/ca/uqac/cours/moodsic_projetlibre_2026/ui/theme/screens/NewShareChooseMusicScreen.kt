@@ -18,7 +18,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,9 +43,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerApi
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
@@ -217,7 +223,7 @@ fun ChooseMusicContainer(
         ) {
 
             Text(
-                text = "Choose your music",
+                text = stringResource(R.string.choose_music_chooseyourmusic),
                 style = MaterialTheme.typography.headlineSmall
             )
 
@@ -228,22 +234,17 @@ fun ChooseMusicContainer(
                 onValueChange = onUpdateSearchText,
                 label = {
                     Text(
-                        text = "Title or artist"
+                        text = stringResource(R.string.choose_music_titleorartist)
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
-            Text(
-                text = "Value : $searchText",
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
             Spacer(modifier = Modifier.height(8.dp))
 
             if (isLoading) {
-                LinearProgressIndicator(
+                CircularProgressIndicator(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -257,57 +258,94 @@ fun ChooseMusicContainer(
 
             selectedTrack?.let {
                 Text(
-                    text = "Selection : ${it.title} - ${it.artist.name}",
+                    text = stringResource(R.string.choose_music_selectionprefix) + " : " + it.title + "-" + it.artist.name,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
-            LazyColumn(
+            MusicPropositionsList(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-            ) {
-
-                items(
-                    items = tracks,
-                    key = { it.id }
-                ) { track ->
-
-                    ListItem(
-                        headlineContent = {
-                            Text(track.title)
-                        },
-                        supportingContent = {
-                            Text(track.artist.name)
-                        },
-                        leadingContent = {
-                            AsyncImage(
-                                model = track.album.cover,
-                                contentDescription = "Album Cover",
-                                modifier = Modifier.size(56.dp),
-                                contentScale = ContentScale.Crop
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        trailingContent = {
-                            TextButton(
-                                onClick = {
-                                    onSelectTrack(track)
-                                }
-                            ) {
-                                Text(
-                                    if (selectedTrack?.id == track.id)
-                                        "Chose"
-                                    else
-                                        "Choose"
-                                )
-                            }
-                        }
-                    )
-
-                    HorizontalDivider()
-                }
-            }
+                    .weight(1f),
+                tracks = tracks,
+                onSelectTrack = onSelectTrack,
+                selectedTrack = selectedTrack
+            )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MusicPropositionsList(
+    modifier: Modifier = Modifier,
+    tracks: List<DeezerTrack> = emptyList(),
+    onSelectTrack: (DeezerTrack) -> Unit = {},
+    selectedTrack: DeezerTrack? = null
+){
+    LazyColumn(
+        modifier = modifier
+    ) {
+
+        items(
+            items = tracks,
+            key = { it.id }
+        ) { track ->
+
+            TrackItem(
+                modifier = Modifier.fillMaxWidth(),
+                track = track,
+                onSelectTrack = onSelectTrack,
+                selectedTrack = selectedTrack
+            )
+
+            HorizontalDivider()
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TrackItem(
+    modifier: Modifier = Modifier,
+    track: DeezerTrack? = null,
+    onSelectTrack: (DeezerTrack) -> Unit = {},
+    selectedTrack: DeezerTrack? = null
+){
+    if (track == null)
+        return;
+
+    ListItem(
+        modifier = modifier,
+        headlineContent = {
+            Text(track.title)
+        },
+        supportingContent = {
+            Text(track.artist.name)
+        },
+        leadingContent = {
+            AsyncImage(
+                model = track.album.cover,
+                contentDescription = "Album Cover",
+                modifier = Modifier.size(56.dp),
+                contentScale = ContentScale.Crop
+            )
+        },
+        trailingContent = {
+            IconButton(
+                onClick = {
+                    onSelectTrack(track)
+                }
+            ) {
+                Icon(
+                    imageVector =
+                        if (selectedTrack?.id == track.id)
+                            Icons.Default.Done
+                        else
+                            Icons.Default.CheckCircle,
+                    contentDescription = "Track Chose State"
+                )
+            }
+        }
+    )
 }
