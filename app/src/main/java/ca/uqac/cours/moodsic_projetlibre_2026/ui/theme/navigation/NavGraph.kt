@@ -1,8 +1,12 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.navigation
 
+import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
@@ -33,6 +37,8 @@ fun MoodSicApp(
     val newShareChooseMusicRoute = "new_share_choose_music"
     val userInfosRoute = "user_infos"
     val settingsRoute = "settings"
+
+    var currentPhotoTakenUri: Uri? by rememberSaveable { mutableStateOf(null) }
 
     ScaffoldApp(
         modifier = modifier,
@@ -68,13 +74,16 @@ fun MoodSicApp(
             composable(newShareRoute){
                 NewShareScreen(
                     onNewShareTakePhotoConfirmed = {
+                        currentPhotoTakenUri = it
                         navController.navigate(newShareChooseMusicRoute)
                     }
                 )
             }
 
             composable(newShareChooseMusicRoute){
-                NewShareChooseMusicScreen()
+                NewShareChooseMusicScreen(
+                    photoUri = currentPhotoTakenUri
+                )
             }
 
             composable(userInfosRoute){
