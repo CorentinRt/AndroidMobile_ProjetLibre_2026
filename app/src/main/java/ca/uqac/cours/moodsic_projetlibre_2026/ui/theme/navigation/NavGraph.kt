@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.HomeScreen
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareChooseMusicScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SettingsScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.UserInfosScreen
@@ -29,6 +30,7 @@ fun MoodSicApp(
 
     val homeRoute = "home"
     val newShareRoute = "new_share"
+    val newShareChooseMusicRoute = "new_share_choose_music"
     val userInfosRoute = "user_infos"
     val settingsRoute = "settings"
 
@@ -59,19 +61,27 @@ fun MoodSicApp(
             navController = navController,
             startDestination = startingPage
         ){
-            composable("home"){
+            composable(homeRoute){
                 HomeScreen()
             }
 
-            composable("new_share"){
-                NewShareScreen()
+            composable(newShareRoute){
+                NewShareScreen(
+                    onNewShareTakePhotoConfirmed = {
+                        navController.navigate(newShareChooseMusicRoute)
+                    }
+                )
             }
 
-            composable("user_infos"){
+            composable(newShareChooseMusicRoute){
+                NewShareChooseMusicScreen()
+            }
+
+            composable(userInfosRoute){
                 UserInfosScreen()
             }
 
-            composable("settings"){
+            composable(settingsRoute){
                 SettingsScreen()
             }
         }

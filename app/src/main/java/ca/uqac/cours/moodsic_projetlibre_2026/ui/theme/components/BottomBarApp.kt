@@ -51,7 +51,7 @@ fun BottomBarApp(
 
         // New Share Item
         NavigationBarItem(
-            selected = currentDestination == "new_share",
+            selected = currentDestination.contains("new_share", true),
             onClick = {
                 onGoToNewShareClicked()
             },

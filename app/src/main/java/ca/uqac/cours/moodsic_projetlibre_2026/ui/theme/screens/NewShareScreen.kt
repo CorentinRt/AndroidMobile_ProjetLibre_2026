@@ -49,10 +49,14 @@ import java.io.File
 
 @Composable
 fun NewShareScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNewShareTakePhotoConfirmed: (Uri) -> Unit = {}
 ) {
     NewShareContent(
-        modifier = modifier
+        modifier = modifier,
+        onNewShareTakePhotoConfirmed = {
+            onNewShareTakePhotoConfirmed(it)
+        }
     )
 }
 
@@ -60,14 +64,17 @@ fun NewShareScreen(
 @Composable
 fun NewShareScreenPreview() {
     ScaffoldApp() { innerPadding ->
-        NewShareContent(modifier = Modifier.padding(innerPadding))
+        NewShareContent(
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun NewShareContent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNewShareTakePhotoConfirmed: (Uri) -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -132,7 +139,7 @@ fun NewShareContent(
                 },
                 onConfirmPhotoClicked = {
                     photoUri?.let { uri ->
-                        //onPhotoConfirmed(uri)
+                        onNewShareTakePhotoConfirmed(uri)
                     }
                 }
             )
