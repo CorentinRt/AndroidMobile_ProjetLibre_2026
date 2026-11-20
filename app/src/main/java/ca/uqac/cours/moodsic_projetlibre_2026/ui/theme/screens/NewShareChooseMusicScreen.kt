@@ -41,9 +41,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerApi
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareChooseMusicViewModel
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 
@@ -53,55 +55,55 @@ fun NewShareChooseMusicScreen(
     photoUri: Uri? = null,
     onConfirmChooseMusicClicked: (DeezerTrack) -> Unit = {}
 ) {
-    var searchText by remember { mutableStateOf("") }
-    var tracks by remember { mutableStateOf<List<DeezerTrack>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
-    var selectedTrack by remember { mutableStateOf<DeezerTrack?>(null) }
+    val chooseMusicScreenViewModel: NewShareChooseMusicViewModel = viewModel()
 
-    LaunchedEffect(searchText) {
+    LaunchedEffect(chooseMusicScreenViewModel.searchText) {
 
-        if (searchText.isBlank()) {
-            tracks = emptyList()
+        if (chooseMusicScreenViewModel.searchText.isBlank()) {
+            chooseMusicScreenViewModel.defineTracks(emptyList())
             return@LaunchedEffect
         }
 
         delay(timeMillis = 500)
 
-        isLoading = true
-        errorMessage = null
+        chooseMusicScreenViewModel.defineIsLoading(true)
+        chooseMusicScreenViewModel.defineErrorMessage(null)
 
         try {
-            val response = DeezerApi.DeezerClient.api.searchTracks(searchText)
-            tracks = response.data
+            val response = DeezerApi.DeezerClient.api.searchTracks(
+                chooseMusicScreenViewModel.searchText
+            )
+
+            chooseMusicScreenViewModel.defineTracks(response.data)
+
         } catch (e: Exception) {
-            tracks = emptyList()
-            errorMessage = "Can't get results !"
+
+            chooseMusicScreenViewModel.defineTracks(emptyList())
+            chooseMusicScreenViewModel.defineErrorMessage("Can't get results !")
+
         } finally {
-            isLoading = false
+            chooseMusicScreenViewModel.defineIsLoading(false)
         }
     }
 
     NewShareChooseMusicContent(
         modifier = modifier,
         photoUri = photoUri,
-        isLoading = isLoading,
-        errorMessage = errorMessage,
-        tracks = tracks,
-        selectedTrack = selectedTrack,
+        isLoading = chooseMusicScreenViewModel.isLoading,
+        errorMessage = chooseMusicScreenViewModel.errorMessage,
+        tracks = chooseMusicScreenViewModel.tracks,
+        selectedTrack = chooseMusicScreenViewModel.selectedTrack,
         onReceiveUpdateSearchText = { newText ->
-            Log.d("AAAA", "before Callback parent appelée : $newText")
-            searchText = newText
-            Log.d("AAAA", "after Callback parent appelée : $newText")
+            chooseMusicScreenViewModel.defineSearchText(newText)
         },
-        searchText = searchText,
+        searchText = chooseMusicScreenViewModel.searchText,
         onConfirmChooseMusicClicked = {
-            if (selectedTrack != null){
-                onConfirmChooseMusicClicked(selectedTrack!!)
+            if (chooseMusicScreenViewModel.selectedTrack != null){
+                onConfirmChooseMusicClicked(chooseMusicScreenViewModel.selectedTrack!!)
             }
         },
         onSelectTrack = {
-            selectedTrack = it
+            chooseMusicScreenViewModel.defineSelectedTrack(it)
         }
     )
 }
