@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +21,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareConfirmSc
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SettingsScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.UserInfosScreen
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareGlobalViewModel
 
 @Preview(showBackground = true)
 @Composable
@@ -27,7 +29,6 @@ fun MoodSicApp(
     modifier: Modifier = Modifier,
     startingPage: String = "home"
 ){
-
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -41,7 +42,7 @@ fun MoodSicApp(
     val userInfosRoute = "user_infos"
     val settingsRoute = "settings"
 
-    var currentPhotoTakenUri: Uri? by rememberSaveable { mutableStateOf(null) }
+    val newShareGlobalViewModel: NewShareGlobalViewModel = viewModel()
 
     ScaffoldApp(
         modifier = modifier,
@@ -77,7 +78,7 @@ fun MoodSicApp(
             composable(newShareRoute){
                 NewShareScreen(
                     onNewShareTakePhotoConfirmed = {
-                        currentPhotoTakenUri = it
+                        newShareGlobalViewModel.defineCurrentPhotoTakenUri(it)
                         navController.navigate(newShareChooseMusicRoute)
                     }
                 )
@@ -85,8 +86,9 @@ fun MoodSicApp(
 
             composable(newShareChooseMusicRoute){
                 NewShareChooseMusicScreen(
-                    photoUri = currentPhotoTakenUri,
+                    photoUri = newShareGlobalViewModel.currentPhotoTakenUri,
                     onConfirmChooseMusicClicked = {
+                        newShareGlobalViewModel.defineCurrentSelectedTrack(it)
                         navController.navigate(newShareConfirmRoute)
                     }
                 )
@@ -94,6 +96,8 @@ fun MoodSicApp(
 
             composable(newShareConfirmRoute){
                 NewShareConfirmScreen(
+                    photoUri = newShareGlobalViewModel.currentPhotoTakenUri,
+                    selectedTrack = newShareGlobalViewModel.currentSelectedTrack,
                     onConfirmShare = {
                         navController.navigate(homeRoute){
                             popUpTo(newShareRoute){

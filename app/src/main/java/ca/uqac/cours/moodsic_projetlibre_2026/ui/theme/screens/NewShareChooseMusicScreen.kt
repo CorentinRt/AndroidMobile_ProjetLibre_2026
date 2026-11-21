@@ -55,37 +55,6 @@ fun NewShareChooseMusicScreen(
 ) {
     val chooseMusicScreenViewModel: NewShareChooseMusicViewModel = viewModel()
 
-    LaunchedEffect(chooseMusicScreenViewModel.searchText) {
-
-        if (chooseMusicScreenViewModel.searchText.isBlank()) {
-            chooseMusicScreenViewModel.defineTracks(emptyList())
-            return@LaunchedEffect
-        }
-
-        delay(timeMillis = 500)
-
-        chooseMusicScreenViewModel.defineIsLoading(true)
-        chooseMusicScreenViewModel.defineErrorMessage(null)
-
-        try {
-            val response = DeezerApi.DeezerClient.api.searchTracks(
-                chooseMusicScreenViewModel.searchText
-            )
-
-            chooseMusicScreenViewModel.defineTracks(response.data)
-
-        } catch (e: Exception) {
-
-            chooseMusicScreenViewModel.defineTracks(emptyList())
-            chooseMusicScreenViewModel.defineErrorMessage(
-                R.string.choose_music_cantgettitleerror
-            )
-
-        } finally {
-            chooseMusicScreenViewModel.defineIsLoading(false)
-        }
-    }
-
     NewShareChooseMusicContent(
         modifier = modifier,
         photoUri = photoUri,
