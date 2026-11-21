@@ -18,7 +18,7 @@ class SettingsViewModel(context: Context): ViewModel() {
         settingsDataStore.nightMode.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = false
+            initialValue = true
         )
 
     fun defineNightMode(nightMode: Boolean) {
