@@ -20,11 +20,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,6 +42,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareChooseMusicViewModel
 import coil.compose.AsyncImage
 
@@ -129,18 +129,18 @@ fun NewShareChooseMusicContent(
 
             PhotoTakenPrevisualisation(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
+                    .fillMaxWidth(0.5f)
                     .padding(vertical = 8.dp)
                     .weight(1f),
                 photoUri = photoUri
             )
 
-            IconButton(
+            CustomAppButton(
                 onClick = {
                     onConfirmChooseMusicClicked()
                 },
                 modifier = Modifier.size(80.dp),
-                colors = IconButtonDefaults.filledIconButtonColors(
+                colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary
                 ),
@@ -311,12 +311,17 @@ fun TrackItem(
             )
         },
         trailingContent = {
-            IconButton(
+            CustomAppButton(
                 onClick = {
                     if (track != null){
                         onSelectTrack(track)
                     }
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                shape = CircleShape
             ) {
                 Icon(
                     imageVector =

@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ca.uqac.cours.moodsic_projetlibre_2026.R
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
 
 @Preview(showBackground = true)
 @Composable
@@ -40,8 +41,8 @@ fun TopBarApp(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Button(
-            modifier = Modifier.weight(2f)
+        CustomAppButton(
+            modifier = Modifier.weight(3f)
                 .padding(end = 36.dp),
             onClick = {
                 onGoBackClicked()
@@ -61,7 +62,7 @@ fun TopBarApp(
         )
 
         Text(
-            modifier = Modifier.weight(2f)
+            modifier = Modifier.weight(3f)
                 .padding(start = 20.dp),
             text = stringResource(
                     id = getTitlePageIDByDestination(

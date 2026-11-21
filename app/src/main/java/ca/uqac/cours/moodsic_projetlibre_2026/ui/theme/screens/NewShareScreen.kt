@@ -22,10 +22,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
 import coil.compose.AsyncImage
 import java.io.File
 
@@ -163,16 +164,16 @@ fun PhotoTakenPrevisualisation(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null
 ){
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
+                .fillMaxSize()
                 .clip(RoundedCornerShape(12.dp))
                 .background(
                     MaterialTheme.colorScheme.surfaceVariant
-                )
-                .border(
-                    1.dp,
-                    MaterialTheme.colorScheme.outline,
-                    RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -190,6 +191,7 @@ fun PhotoTakenPrevisualisation(
                 )
             }
         }
+    }
 }
 
 @Preview(showBackground = true)
@@ -204,12 +206,12 @@ fun PhotoTakenActionsButtons(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        IconButton(
+        CustomAppButton(
             onClick = {
                 onRestartPhotoClicked()
             },
             modifier = Modifier.size(80.dp),
-            colors = IconButtonDefaults.filledIconButtonColors(
+            colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary
             ),
@@ -221,12 +223,12 @@ fun PhotoTakenActionsButtons(
             )
         }
 
-        IconButton(
+        CustomAppButton(
             onClick = {
                 onConfirmPhotoClicked()
             },
             modifier = Modifier.size(80.dp),
-            colors = IconButtonDefaults.filledIconButtonColors(
+            colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary
             ),
@@ -253,12 +255,12 @@ fun PhotoNotTakenYetActionsButtons(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconButton(
+            CustomAppButton(
                 onClick = {
                     onOpenCameraClicked()
                 },
                 modifier = Modifier.size(80.dp),
-                colors = IconButtonDefaults.filledIconButtonColors(
+                colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary
                 ),

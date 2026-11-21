@@ -2,7 +2,6 @@ package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,15 +15,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
 import coil.compose.AsyncImage
 
 @Composable
@@ -94,10 +89,13 @@ fun NewShareConfirmContent(
             track = selectedTrack
         )
 
-        Button(
+        CustomAppButton(
             onClick = {
                 if (photoUri != null && selectedTrack != null){
-                    onConfirmShare(photoUri, selectedTrack)
+                    onConfirmShare(
+                        photoUri,
+                        selectedTrack
+                    )
                 }
             },
             modifier = Modifier
