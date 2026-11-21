@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -146,7 +149,7 @@ fun TrackPrevisualisation(
                 contentDescription = "Album Cover",
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f)
+                    .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -154,7 +157,7 @@ fun TrackPrevisualisation(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(3f)
+                    .weight(2.5f)
                     .padding(horizontal = 8.dp, vertical = 8.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
@@ -170,6 +173,12 @@ fun TrackPrevisualisation(
                     fontSize = 14.sp
                 )
             }
+
+            LinearProgressIndicator(
+                modifier = Modifier.weight(1f)
+            )
+
+            Spacer(Modifier.weight(0.5f))
         }
     }
 }

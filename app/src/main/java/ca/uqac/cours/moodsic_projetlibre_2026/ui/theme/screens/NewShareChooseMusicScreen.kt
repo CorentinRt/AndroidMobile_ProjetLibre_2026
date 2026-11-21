@@ -6,7 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,9 +24,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -167,72 +173,72 @@ fun ChooseMusicContainer(
     searchText: String = "",
     onSelectTrack: (DeezerTrack) -> Unit = {}
 ){
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(
-                MaterialTheme.colorScheme.surfaceVariant
-            )
-            .border(
-                1.dp,
-                MaterialTheme.colorScheme.outline,
-                RoundedCornerShape(12.dp)
-            )
-    ){
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        )
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            TextField(
-                value = searchText,
-                onValueChange = onUpdateSearchText,
-                label = {
-                    Text(
-                        text = stringResource(R.string.choose_music_titleorartist)
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            if (isLoading) {
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.CenterHorizontally),
-                    contentAlignment = Alignment.Center
-                ){
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxSize(0.6f),
-                        strokeWidth = 6.dp
-                    )
-                }
-            }
-
-            errorMessage?.let {
-                Text(
-                    text = stringResource(it),
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-
-            selectedTrack?.let {
-                Text(
-                    text = stringResource(R.string.choose_music_selectionprefix) + " : " + it.title + "-" + it.artist.name,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-
-            MusicPropositionsList(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
-                tracks = tracks,
-                onSelectTrack = onSelectTrack,
-                selectedTrack = selectedTrack
-            )
+            ) {
+                TextField(
+                    value = searchText,
+                    onValueChange = onUpdateSearchText,
+                    label = {
+                        Text(
+                            text = stringResource(R.string.choose_music_titleorartist)
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                if (isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.CenterHorizontally),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxSize(0.6f),
+                            strokeWidth = 6.dp
+                        )
+                    }
+                }
+
+                errorMessage?.let {
+                    Text(
+                        text = stringResource(it),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+
+                selectedTrack?.let {
+                    Text(
+                        text = stringResource(R.string.choose_music_selectionprefix) + " : " + it.title + "-" + it.artist.name,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                MusicPropositionsList(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    tracks = tracks,
+                    onSelectTrack = onSelectTrack,
+                    selectedTrack = selectedTrack
+                )
+            }
         }
     }
 }
@@ -248,7 +254,6 @@ fun MusicPropositionsList(
     LazyColumn(
         modifier = modifier
     ) {
-
         items(
             items = tracks,
             key = { it.id }
@@ -266,7 +271,7 @@ fun MusicPropositionsList(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 400, heightDp = 100)
 @Composable
 fun TrackItem(
     modifier: Modifier = Modifier,
@@ -288,11 +293,24 @@ fun TrackItem(
     ListItem(
         modifier = modifier,
         headlineContent = {
-            Text(
-                text = title,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    modifier = Modifier.weight(2f),
+                    text = title,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                if (track != null && selectedTrack?.id == track.id){
+                    LinearProgressIndicator(
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                else{
+                    Spacer(Modifier.weight(1f))
+                }
+            }
         },
         supportingContent = {
             Text(
@@ -305,7 +323,8 @@ fun TrackItem(
                 model = albumCover,
                 contentDescription = "Album Cover",
                 modifier = Modifier
-                    .size(56.dp)
+                    .fillMaxHeight(0.9f)
+                    .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
