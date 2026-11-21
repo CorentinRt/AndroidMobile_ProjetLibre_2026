@@ -30,22 +30,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
-import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerApi
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareChooseMusicViewModel
 import coil.compose.AsyncImage
-import kotlinx.coroutines.delay
 
 @Composable
 fun NewShareChooseMusicScreen(
@@ -275,34 +274,53 @@ fun TrackItem(
     onSelectTrack: (DeezerTrack) -> Unit = {},
     selectedTrack: DeezerTrack? = null
 ){
-    if (track == null)
-        return;
+    var title = "None Title"
+    var artistName = "None Name"
+    var albumCover = ""
+
+    if (track != null){
+
+        title = track.title
+        artistName = track.artist.name
+        albumCover = track.album.cover
+    }
 
     ListItem(
         modifier = modifier,
         headlineContent = {
-            Text(track.title)
+            Text(
+                text = title,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         },
         supportingContent = {
-            Text(track.artist.name)
+            Text(
+                text = artistName,
+                fontSize = 18.sp
+            )
         },
         leadingContent = {
             AsyncImage(
-                model = track.album.cover,
+                model = albumCover,
                 contentDescription = "Album Cover",
-                modifier = Modifier.size(56.dp),
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
         },
         trailingContent = {
             IconButton(
                 onClick = {
-                    onSelectTrack(track)
+                    if (track != null){
+                        onSelectTrack(track)
+                    }
                 }
             ) {
                 Icon(
                     imageVector =
-                        if (selectedTrack?.id == track.id)
+                        if (track != null && selectedTrack?.id == track.id)
                             Icons.Default.Done
                         else
                             Icons.Default.CheckCircle,

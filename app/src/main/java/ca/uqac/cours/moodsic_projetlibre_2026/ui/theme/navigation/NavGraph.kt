@@ -98,7 +98,8 @@ fun MoodSicApp(
                 NewShareConfirmScreen(
                     photoUri = newShareGlobalViewModel.currentPhotoTakenUri,
                     selectedTrack = newShareGlobalViewModel.currentSelectedTrack,
-                    onConfirmShare = {
+                    onConfirmShare = { photoUri, selectedTrack ->
+
                         navController.navigate(homeRoute){
                             popUpTo(newShareRoute){
                                 inclusive = true
