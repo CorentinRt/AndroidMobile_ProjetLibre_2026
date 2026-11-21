@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.HomeScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareChooseMusicScreen
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareConfirmScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SettingsScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.UserInfosScreen
@@ -36,6 +37,7 @@ fun MoodSicApp(
     val homeRoute = "home"
     val newShareRoute = "new_share"
     val newShareChooseMusicRoute = "new_share_choose_music"
+    val newShareConfirmRoute = "new_share_confirm"
     val userInfosRoute = "user_infos"
     val settingsRoute = "settings"
 
@@ -83,7 +85,22 @@ fun MoodSicApp(
 
             composable(newShareChooseMusicRoute){
                 NewShareChooseMusicScreen(
-                    photoUri = currentPhotoTakenUri
+                    photoUri = currentPhotoTakenUri,
+                    onConfirmChooseMusicClicked = {
+                        navController.navigate(newShareConfirmRoute)
+                    }
+                )
+            }
+
+            composable(newShareConfirmRoute){
+                NewShareConfirmScreen(
+                    onConfirmShare = {
+                        navController.navigate(homeRoute){
+                            popUpTo(newShareRoute){
+                                inclusive = true
+                            }
+                        }
+                    }
                 )
             }
 

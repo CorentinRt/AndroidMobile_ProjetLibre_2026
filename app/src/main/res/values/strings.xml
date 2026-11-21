@@ -15,8 +15,8 @@
     <string name="new_share_screen_nopicturetook">Aucune photo prise</string>
 
     // New Share Screen - Choose Music
-    <string name="choose_music_chooseyourmusic">Entrer un titre</string>
-    <string name="choose_music_titleorartist">Titre ou Artiste</string>
+    <string name="choose_music_titleorartist">Titre ou Artiste...</string>
     <string name="choose_music_selectionprefix">Sélection</string>
+    <string name="choose_music_cantgettitleerror">Aucun résultat...</string>
 
 </resources>

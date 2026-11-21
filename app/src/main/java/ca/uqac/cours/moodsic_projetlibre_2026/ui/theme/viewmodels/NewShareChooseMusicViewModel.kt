@@ -17,7 +17,7 @@ class NewShareChooseMusicViewModel: ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    var errorMessage by mutableStateOf<String?>(null)
+    var errorMessage by mutableStateOf<Int?>(null)
         private set
 
     var selectedTrack by mutableStateOf<DeezerTrack?>(null)
@@ -37,7 +37,7 @@ class NewShareChooseMusicViewModel: ViewModel() {
     }
 
 
-    fun defineErrorMessage(errorMessage: String?) {
+    fun defineErrorMessage(errorMessage: Int?) {
         this.errorMessage = errorMessage
     }
 

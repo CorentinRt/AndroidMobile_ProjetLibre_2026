@@ -1,7 +1,6 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Done
@@ -27,18 +25,12 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -85,7 +77,9 @@ fun NewShareChooseMusicScreen(
         } catch (e: Exception) {
 
             chooseMusicScreenViewModel.defineTracks(emptyList())
-            chooseMusicScreenViewModel.defineErrorMessage("Can't get results !")
+            chooseMusicScreenViewModel.defineErrorMessage(
+                R.string.choose_music_cantgettitleerror
+            )
 
         } finally {
             chooseMusicScreenViewModel.defineIsLoading(false)
@@ -130,7 +124,7 @@ fun NewShareChooseMusicContent(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
     isLoading: Boolean = false,
-    errorMessage: String? = "",
+    errorMessage: Int? = null,
     tracks: List<DeezerTrack> = emptyList(),
     selectedTrack: DeezerTrack? = null,
     onReceiveUpdateSearchText: (String) -> Unit = {},
@@ -153,7 +147,7 @@ fun NewShareChooseMusicContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
-                    .weight(1f),
+                    .weight(1.5f),
                 isLoading = isLoading,
                 errorMessage = errorMessage,
                 tracks = tracks,
@@ -167,7 +161,7 @@ fun NewShareChooseMusicContent(
 
             PhotoTakenPrevisualisation(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.6f)
                     .padding(vertical = 8.dp)
                     .weight(1f),
                 photoUri = photoUri
@@ -198,7 +192,7 @@ fun NewShareChooseMusicContent(
 fun ChooseMusicContainer(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    errorMessage: String? = "",
+    errorMessage: Int? = null,
     tracks: List<DeezerTrack> = emptyList(),
     selectedTrack: DeezerTrack? = null,
     onUpdateSearchText: (String) -> Unit = {},
@@ -221,14 +215,6 @@ fun ChooseMusicContainer(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-
-            Text(
-                text = stringResource(R.string.choose_music_chooseyourmusic),
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
             TextField(
                 value = searchText,
                 onValueChange = onUpdateSearchText,
@@ -251,7 +237,7 @@ fun ChooseMusicContainer(
 
             errorMessage?.let {
                 Text(
-                    text = it,
+                    text = stringResource(it),
                     color = MaterialTheme.colorScheme.error
                 )
             }
