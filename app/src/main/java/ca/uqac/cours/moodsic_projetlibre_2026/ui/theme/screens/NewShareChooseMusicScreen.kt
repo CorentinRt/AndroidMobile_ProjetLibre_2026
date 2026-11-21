@@ -199,9 +199,17 @@ fun ChooseMusicContainer(
             Spacer(modifier = Modifier.height(8.dp))
 
             if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally),
+                    contentAlignment = Alignment.Center
+                ){
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize(0.6f),
+                        strokeWidth = 6.dp
+                    )
+                }
             }
 
             errorMessage?.let {
