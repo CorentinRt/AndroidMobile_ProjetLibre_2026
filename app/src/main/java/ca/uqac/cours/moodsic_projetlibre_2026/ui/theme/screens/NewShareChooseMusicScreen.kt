@@ -256,7 +256,9 @@ fun MusicPropositionsList(
     ) {
         items(
             items = tracks,
-            key = { it.id }
+            key = {
+                it.id
+            }
         ) { track ->
 
             TrackItem(
@@ -267,12 +269,6 @@ fun MusicPropositionsList(
             )
 
             HorizontalDivider()
-        }
-
-        item{
-            TrackItem(
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
 }
@@ -285,77 +281,18 @@ fun TrackItem(
     onSelectTrack: (DeezerTrack) -> Unit = {},
     selectedTrack: DeezerTrack? = null
 ){
-    var title = "None Title"
-    var artistName = "None Name"
-    var albumCover = ""
-
-    if (track != null){
-
-        title = track.title
-        artistName = track.artist.name
-        albumCover = track.album.cover
-    }
-
-    ListItem(
-        modifier = modifier.height(80.dp),
-        headlineContent = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    modifier = Modifier.weight(2f),
-                    text = title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                if (track != null && selectedTrack?.id == track.id){
-                    LinearProgressIndicator(
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                else{
-                    Spacer(Modifier.weight(1f))
-                }
-            }
-        },
-        supportingContent = {
-            Text(
-                text = artistName,
-                fontSize = 12.sp
-            )
-        },
-        leadingContent = {
-            AsyncImage(
-                model = albumCover,
-                contentDescription = "Album Cover",
-                modifier = Modifier
-                    .fillMaxHeight(0.9f)
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
-        },
-        trailingContent = {
-            CustomAppButton(
-                onClick = {
-                    if (track != null){
-                        onSelectTrack(track)
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
-                ),
-                shape = CircleShape
-            ) {
-                Icon(
-                    imageVector =
-                        if (track != null && selectedTrack?.id == track.id)
-                            Icons.Default.Done
-                        else
-                            Icons.Default.CheckCircle,
-                    contentDescription = "Track Chose State"
-                )
+    TrackPrevisualisation(
+        modifier = modifier
+            .height(80.dp),
+        track = track,
+        isPlaying =
+            if (selectedTrack != null && track != null)
+                selectedTrack == track
+            else
+                false,
+        onTogglePlayTrack = {
+            if (track != null){
+                onSelectTrack(track)
             }
         }
     )
