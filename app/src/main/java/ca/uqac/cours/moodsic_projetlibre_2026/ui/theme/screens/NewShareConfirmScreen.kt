@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -28,28 +27,19 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareMusicPlayerViewModel
 import coil.compose.AsyncImage
 
 @Composable
@@ -57,51 +47,21 @@ fun NewShareConfirmScreen(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
     selectedTrack: DeezerTrack? = null,
-    onConfirmShare: (Uri, DeezerTrack) -> Unit = { _, _ -> }
+    onConfirmShare: (Uri, DeezerTrack) -> Unit = { _, _ -> },
+    newShareMusicPlayerViewModel: NewShareMusicPlayerViewModel
 ) {
-    val context = LocalContext.current
-
-    val player = remember { ExoPlayer.Builder(context).build() }
-    player.repeatMode = Player.REPEAT_MODE_ONE
-
-    var isPlaying by remember { mutableStateOf(false) }
-
-    LaunchedEffect(selectedTrack?.preview){
-        player.stop()
-        player.clearMediaItems()
-
-        if (selectedTrack != null){
-            if (!selectedTrack.preview.isBlank()){
-                player.setMediaItem(
-                    MediaItem.fromUri(selectedTrack.preview)
-                )
-
-                player.isPlaying
-                player.prepare()
-            }
-        }
-    }
-
-    DisposableEffect(player){
-        onDispose {
-            player.release()
-        }
-    }
-
     NewShareConfirmContent(
         modifier = modifier,
         photoUri = photoUri,
         selectedTrack = selectedTrack,
         onConfirmShare = onConfirmShare,
-        isPlaying = isPlaying,
+        isPlaying = newShareMusicPlayerViewModel.isPlaying,
         onTogglePlayTrack = {
-            if (isPlaying){
-                isPlaying = false
-                player.pause()
+            if (newShareMusicPlayerViewModel.isPlaying){
+                newShareMusicPlayerViewModel.pause()
             }
             else{
-                isPlaying = true
-                player.play()
+                newShareMusicPlayerViewModel.play()
             }
         }
     )
@@ -223,7 +183,7 @@ fun TrackPrevisualisation(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(2.5f)
+                    .weight(3f)
                     .padding(horizontal = 8.dp, vertical = 8.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
@@ -267,7 +227,7 @@ fun TrackPrevisualisation(
                 Spacer(Modifier.weight(1f))
             }
 
-            Spacer(Modifier.weight(0.5f))
+            Spacer(Modifier.weight(0.3f))
 
             CustomAppButton(
                 onClick = onTogglePlayTrack

@@ -1,15 +1,10 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens
 
 import android.net.Uri
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,42 +16,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareChooseMusicViewModel
-import coil.compose.AsyncImage
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareMusicPlayerViewModel
 
 @Composable
 fun NewShareChooseMusicScreen(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
-    onConfirmChooseMusicClicked: (DeezerTrack) -> Unit = {}
+    onConfirmChooseMusicClicked: (DeezerTrack) -> Unit = {},
+    newShareMusicPlayerViewModel: NewShareMusicPlayerViewModel
 ) {
     val chooseMusicScreenViewModel: NewShareChooseMusicViewModel = viewModel()
 
@@ -77,7 +65,22 @@ fun NewShareChooseMusicScreen(
             }
         },
         onSelectTrack = {
+            val wasAlreadySelected =  chooseMusicScreenViewModel.selectedTrack?.id == it.id
+
             chooseMusicScreenViewModel.defineSelectedTrack(it)
+
+            if (wasAlreadySelected){
+                if (newShareMusicPlayerViewModel.isPlaying){
+                    newShareMusicPlayerViewModel.pause()
+                }
+                else{
+                    newShareMusicPlayerViewModel.play()
+                }
+            }
+            else{
+                newShareMusicPlayerViewModel.loadTrack(it.preview)
+                newShareMusicPlayerViewModel.play()
+            }
         }
     )
 }
