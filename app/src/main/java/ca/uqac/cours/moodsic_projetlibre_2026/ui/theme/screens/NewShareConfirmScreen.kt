@@ -183,7 +183,8 @@ fun TrackPrevisualisation(
     modifier: Modifier = Modifier,
     track: DeezerTrack? = null,
     isPlaying: Boolean = true,
-    onTogglePlayTrack: () -> Unit = {}
+    onTogglePlayTrack: () -> Unit = {},
+    onClickTrackPrevisualisation: (DeezerTrack) -> Unit = {}
 ){
     var title = "None Title"
     var artistName = "None Name"
@@ -196,7 +197,12 @@ fun TrackPrevisualisation(
     }
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        onClick = {
+            if (track != null){
+                onClickTrackPrevisualisation(track)
+            }
+        }
     ){
 
         Row(

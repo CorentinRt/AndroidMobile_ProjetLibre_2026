@@ -264,8 +264,9 @@ fun MusicPropositionsList(
             TrackItem(
                 modifier = Modifier.fillMaxWidth(),
                 track = track,
-                onSelectTrack = onSelectTrack,
-                selectedTrack = selectedTrack
+                onClickTrackPrevisualisation = onSelectTrack,
+                selectedTrack = selectedTrack,
+                onTogglePlayTrack = onSelectTrack
             )
 
             HorizontalDivider()
@@ -278,8 +279,9 @@ fun MusicPropositionsList(
 fun TrackItem(
     modifier: Modifier = Modifier,
     track: DeezerTrack? = null,
-    onSelectTrack: (DeezerTrack) -> Unit = {},
-    selectedTrack: DeezerTrack? = null
+    onClickTrackPrevisualisation: (DeezerTrack) -> Unit = {},
+    selectedTrack: DeezerTrack? = null,
+    onTogglePlayTrack: (DeezerTrack) -> Unit = {}
 ){
     TrackPrevisualisation(
         modifier = modifier
@@ -290,9 +292,10 @@ fun TrackItem(
                 selectedTrack == track
             else
                 false,
+        onClickTrackPrevisualisation = onClickTrackPrevisualisation,
         onTogglePlayTrack = {
             if (track != null){
-                onSelectTrack(track)
+                onTogglePlayTrack(track)
             }
         }
     )
