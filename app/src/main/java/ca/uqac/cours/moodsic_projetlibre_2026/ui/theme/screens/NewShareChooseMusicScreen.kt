@@ -268,10 +268,16 @@ fun MusicPropositionsList(
 
             HorizontalDivider()
         }
+
+        item{
+            TrackItem(
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 100)
+@Preview(showBackground = true, widthDp = 400, heightDp = 80)
 @Composable
 fun TrackItem(
     modifier: Modifier = Modifier,
@@ -291,7 +297,7 @@ fun TrackItem(
     }
 
     ListItem(
-        modifier = modifier,
+        modifier = modifier.height(80.dp),
         headlineContent = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -299,7 +305,7 @@ fun TrackItem(
                 Text(
                     modifier = Modifier.weight(2f),
                     text = title,
-                    fontSize = 24.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
                 if (track != null && selectedTrack?.id == track.id){
@@ -315,7 +321,7 @@ fun TrackItem(
         supportingContent = {
             Text(
                 text = artistName,
-                fontSize = 18.sp
+                fontSize = 12.sp
             )
         },
         leadingContent = {
