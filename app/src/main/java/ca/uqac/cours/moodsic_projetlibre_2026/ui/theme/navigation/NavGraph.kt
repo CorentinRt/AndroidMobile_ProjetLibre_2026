@@ -21,6 +21,8 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.HomeScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareChooseMusicScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareConfirmScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareScreen
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SeeMoodContent
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SeeMoodScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SettingsScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.UserInfosScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareGlobalViewModel
@@ -47,6 +49,7 @@ fun MoodSicApp(
     val newShareConfirmRoute = "new_share_confirm"
     val userInfosRoute = "user_infos"
     val settingsRoute = "settings"
+    val seeMoodRoute = "seeMood"
 
     val newShareGlobalViewModel: NewShareGlobalViewModel = viewModel()
 
@@ -190,6 +193,10 @@ fun MoodSicApp(
 
             composable(settingsRoute){
                 SettingsScreen()
+            }
+
+            composable(seeMoodRoute){
+                SeeMoodScreen()
             }
         }
     }
