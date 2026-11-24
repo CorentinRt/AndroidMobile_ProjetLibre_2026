@@ -8,4 +8,5 @@ import androidx.lifecycle.ViewModel
 class RegisterViewModel : ViewModel() {
     var email by mutableStateOf("")
     var mdp by mutableStateOf("")
+
 }

@@ -28,7 +28,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.RegisterViewMo
 import androidx.compose.foundation.layout.Arrangement
 
 @Composable
-fun RegisterScreen(registerViewModel : RegisterViewModel){
+fun RegisterScreen(registerViewModel : RegisterViewModel , onGoToHome: () -> Unit){
 
     Column(modifier = Modifier.fillMaxSize() , horizontalAlignment = Alignment.CenterHorizontally){
         Spacer(modifier = Modifier.height(50.dp))
@@ -70,10 +70,10 @@ fun RegisterScreen(registerViewModel : RegisterViewModel){
             horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = { }) { Text("Sign Up") }
-            Button(onClick = { }) { Text("Sign In") }
+            Button(onClick = onGoToHome) { Text("Sign Up") }
+            Button(onClick = onGoToHome) { Text("Sign In") }
         }
-            Button(onClick = { }) { Text("Log With Google") }
+            Button(onClick = onGoToHome) { Text("Log With Google") }
 
     }
 }

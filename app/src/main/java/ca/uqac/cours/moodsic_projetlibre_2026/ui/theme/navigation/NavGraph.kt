@@ -207,7 +207,7 @@ fun MoodSicApp(
             composable(registerRoute){
                 val registerViewModel: RegisterViewModel = viewModel()
 
-                RegisterScreen(registerViewModel = registerViewModel)
+                RegisterScreen(registerViewModel = registerViewModel, onGoToHome = { navController.navigate(homeRoute) })
             }
         }
     }
