@@ -1,6 +1,7 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,5 +29,5 @@ fun HomeScreenPreview(){
 fun HomeScreenContent(
     modifier: Modifier = Modifier
 ){
-
+    Text("HomeScreen")
 }

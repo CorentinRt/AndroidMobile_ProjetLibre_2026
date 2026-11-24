@@ -21,18 +21,20 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.HomeScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareChooseMusicScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareConfirmScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.NewShareScreen
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.RegisterScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SeeMoodContent
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SeeMoodScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SettingsScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.UserInfosScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareGlobalViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareMusicPlayerViewModel
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.RegisterViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun MoodSicApp(
     modifier: Modifier = Modifier,
-    startingPage: String = "home"
+    startingPage: String = "register"
 ){
     val context: Context = LocalContext.current
 
@@ -43,6 +45,7 @@ fun MoodSicApp(
     val currentRoute = navBackStackEntry?.destination?.route
 
     val homeRoute = "home"
+    val registerRoute = "register"
     val newShareRouteSubGraph = "new_share_sub_graph"
     val newShareRoute = "new_share"
     val newShareChooseMusicRoute = "new_share_choose_music"
@@ -197,6 +200,14 @@ fun MoodSicApp(
 
             composable(seeMoodRoute){
                 SeeMoodScreen()
+            }
+            composable(registerRoute){
+                SeeMoodScreen()
+            }
+            composable(registerRoute){
+                val registerViewModel: RegisterViewModel = viewModel()
+
+                RegisterScreen(registerViewModel = registerViewModel)
             }
         }
     }
