@@ -21,29 +21,33 @@ fun ScaffoldApp(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopBarApp(
-                currentDestination = currentDestination,
-                onGoBackClicked = {
-                    onGoBackClicked()
-                }
-            )
+            if (currentDestination != "register"){
+                TopBarApp(
+                    currentDestination = currentDestination,
+                    onGoBackClicked = {
+                        onGoBackClicked()
+                    }
+                )
+            }
         },
         bottomBar = {
-            BottomBarApp(
-                currentDestination = currentDestination,
-                onGoToHomeClicked = {
-                    onGoToHomeClicked()
-                },
-                onGoToNewShareClicked = {
-                    onGoToNewShareClicked()
-                },
-                onGoToUserInfosClicked = {
-                    onGoToUserInfosClicked()
-                },
-                onGoToSettingsClicked = {
-                    onGoToSettingsClicked()
-                }
-            )
+            if (currentDestination != "register"){
+                BottomBarApp(
+                    currentDestination = currentDestination,
+                    onGoToHomeClicked = {
+                        onGoToHomeClicked()
+                    },
+                    onGoToNewShareClicked = {
+                        onGoToNewShareClicked()
+                    },
+                    onGoToUserInfosClicked = {
+                        onGoToUserInfosClicked()
+                    },
+                    onGoToSettingsClicked = {
+                        onGoToSettingsClicked()
+                    }
+                )
+            }
         }
     ){
         innerPadding ->

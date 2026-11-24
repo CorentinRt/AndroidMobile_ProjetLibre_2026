@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
                     MoodSicApp(
                         modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
-                        startingPage = "home"
+                        startingPage = "register"
                     )
                 }
             }
