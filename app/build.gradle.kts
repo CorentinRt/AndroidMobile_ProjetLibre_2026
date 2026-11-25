@@ -39,6 +39,11 @@ if (localPropsFile.exists()) {
                 "SUPABASE_ANON_KEY",
                 "\"${localProps.getProperty("SUPABASE_ANON_KEY") ?: ""}\""
             )
+            buildConfigField(
+                "String",
+                "GOOGLE_WEB_CLIENT_ID",
+                "\"${localProps.getProperty("GOOGLE_WEB_CLIENT_ID") ?: ""}\""
+            )
         }
 
         buildTypes {
@@ -60,6 +65,7 @@ if (localPropsFile.exists()) {
 
 
     dependencies {
+
         implementation(platform(libs.androidx.compose.bom))
         implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.compose.material3)
@@ -75,6 +81,9 @@ if (localPropsFile.exists()) {
         androidTestImplementation(libs.androidx.junit)
         debugImplementation(libs.androidx.compose.ui.test.manifest)
         debugImplementation(libs.androidx.compose.ui.tooling)
+        implementation("androidx.credentials:credentials:1.5.0")
+        implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+        implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
         implementation("io.coil-kt:coil-compose:2.7.0")
         implementation("com.squareup.retrofit2:retrofit:2.11.0")
         implementation("com.squareup.retrofit2:converter-gson:2.11.0")

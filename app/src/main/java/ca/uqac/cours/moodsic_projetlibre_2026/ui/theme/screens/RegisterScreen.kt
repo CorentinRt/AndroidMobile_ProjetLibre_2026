@@ -26,9 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.RegisterViewModel
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun RegisterScreen(registerViewModel : RegisterViewModel , onGoToHome: () -> Unit){
+    val context = LocalContext.current
 
     Column(modifier = Modifier.fillMaxSize() , horizontalAlignment = Alignment.CenterHorizontally){
         Spacer(modifier = Modifier.height(50.dp))
@@ -73,7 +75,6 @@ fun RegisterScreen(registerViewModel : RegisterViewModel , onGoToHome: () -> Uni
             Button(onClick = onGoToHome) { Text("Sign Up") }
             Button(onClick = onGoToHome) { Text("Sign In") }
         }
-            Button(onClick = onGoToHome) { Text("Log With Google") }
-
+            Button(onClick = { registerViewModel.signInWithGoogle(context)}) { Text("Log With Google") }
     }
 }
