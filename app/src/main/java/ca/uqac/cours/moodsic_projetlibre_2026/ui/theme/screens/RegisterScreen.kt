@@ -75,6 +75,10 @@ fun RegisterScreen(registerViewModel : RegisterViewModel , onGoToHome: () -> Uni
             Button(onClick = onGoToHome) { Text("Sign Up") }
             Button(onClick = onGoToHome) { Text("Sign In") }
         }
-            Button(onClick = { registerViewModel.signInWithGoogle(context)}) { Text("Log With Google") }
+            Button(onClick = {
+                registerViewModel.signInWithGoogle(context);
+                onGoToHome();
+            }
+            ) { Text("Log With Google") }
     }
 }

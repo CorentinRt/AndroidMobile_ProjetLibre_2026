@@ -35,7 +35,6 @@ class RegisterViewModel : ViewModel() {
     fun signInWithGoogle(context: Context) {
         viewModelScope.launch {
             try {
-                // 1. Ce qu'on demande à Google
                 val googleIdOption = GetGoogleIdOption.Builder()
                     .setFilterByAuthorizedAccounts(false)
                     .setServerClientId(BuildConfig.GOOGLE_WEB_CLIENT_ID)
@@ -45,18 +44,15 @@ class RegisterViewModel : ViewModel() {
                     .addCredentialOption(googleIdOption)
                     .build()
 
-                // 2. Afficher la fenêtre de choix du compte
                 val result = CredentialManager.create(context)
                     .getCredential(context = context, request = request)
 
-                // 3. Extraire le jeton Google
                 val credential = result.credential
                 if (credential is CustomCredential &&
                     credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
                 ) {
                     val idToken = GoogleIdTokenCredential.createFrom(credential.data).idToken
 
-                    // 4. Envoyer le jeton à Supabase
                     SupabaseClientProvider.client.auth.signInWith(IDToken) {
                         this.idToken = idToken
                         provider = Google
