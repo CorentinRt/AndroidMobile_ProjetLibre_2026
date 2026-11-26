@@ -100,7 +100,7 @@ fun NewShareChooseMusicScreenPreview() {
 fun NewShareChooseMusicContent(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
-    isLoading: Boolean = false,
+    isLoading: Boolean = true,
     errorMessage: Int? = null,
     tracks: List<DeezerTrack> = emptyList(),
     selectedTrack: DeezerTrack? = null,
@@ -205,42 +205,34 @@ fun ChooseMusicContainer(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 if (isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.CenterHorizontally),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxSize(0.6f),
-                            strokeWidth = 6.dp
+                    GhostTrackItem(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                else {
+                    errorMessage?.let {
+                        Text(
+                            text = stringResource(it),
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
-                }
 
-                errorMessage?.let {
-                    Text(
-                        text = stringResource(it),
-                        color = MaterialTheme.colorScheme.error
+                    selectedTrack?.let {
+                        Text(
+                            text = stringResource(R.string.choose_music_selectionprefix) + " : " + it.title + "-" + it.artist.name,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
+                    MusicPropositionsList(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        tracks = tracks,
+                        onSelectTrack = onSelectTrack,
+                        selectedTrack = selectedTrack
                     )
                 }
-
-                selectedTrack?.let {
-                    Text(
-                        text = stringResource(R.string.choose_music_selectionprefix) + " : " + it.title + "-" + it.artist.name,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-
-                MusicPropositionsList(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    tracks = tracks,
-                    onSelectTrack = onSelectTrack,
-                    selectedTrack = selectedTrack
-                )
             }
         }
     }
@@ -301,5 +293,16 @@ fun TrackItem(
                 onTogglePlayTrack(track)
             }
         }
+    )
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 80)
+@Composable
+fun GhostTrackItem(
+    modifier: Modifier = Modifier
+){
+    GhostTrackPrevisualisation(
+        modifier = modifier
+            .height(80.dp)
     )
 }

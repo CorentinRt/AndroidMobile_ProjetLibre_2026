@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.SkeletonBox
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareMusicPlayerViewModel
@@ -243,6 +244,83 @@ fun TrackPrevisualisation(
                     contentDescription = "Play Track"
                 )
             }
+
+            Spacer(Modifier.weight(0.5f))
+        }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 100)
+@Composable
+fun GhostTrackPrevisualisation(
+    modifier: Modifier = Modifier
+){
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+    ){
+
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ){
+            SkeletonBox(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(1f),
+                shape = RoundedCornerShape(8.dp)
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(3f)
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ){
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight(0.5f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
+                ){
+                    SkeletonBox(
+                        modifier = Modifier
+                            .fillMaxWidth(0.75f)
+                            .height(20.dp)
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight(0.5f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
+                ){
+                    SkeletonBox(
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .height(14.dp)
+                    )
+                }
+            }
+
+            SkeletonBox(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(4.dp),
+                shape = RoundedCornerShape(50)
+            )
+
+            Spacer(Modifier.weight(0.3f))
+
+            SkeletonBox(
+                modifier = Modifier
+                    .size(40.dp),
+                shape = CircleShape
+            )
 
             Spacer(Modifier.weight(0.5f))
         }
