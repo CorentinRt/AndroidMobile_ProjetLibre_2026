@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -110,7 +111,7 @@ fun ListSettings(
     ){
         SwitchSetting(
             name = stringResource(R.string.settings_nightmode),
-            icon = Icons.Default.Phone,
+            icon = R.drawable.night_mode,
             contentDescription = "Night Mode Icon Setting",
             checked = nightMode,
             onCheckedChange = {
@@ -125,7 +126,7 @@ fun ListSettings(
 fun SwitchSetting(
     modifier : Modifier = Modifier,
     name: String = "Placeholder",
-    icon: ImageVector = Icons.Default.Home,
+    icon: Int = R.drawable.night_mode,
     contentDescription: String = "Icon Setting",
     checked : Boolean = true,
     onCheckedChange : (Boolean) -> Unit = {}
@@ -136,7 +137,7 @@ fun SwitchSetting(
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Icon(
-            imageVector = icon,
+            painter = painterResource(icon),
             contentDescription = contentDescription
         )
 

@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -218,7 +219,7 @@ fun PhotoTakenActionsButtons(
             shape = CircleShape
         ) {
             Icon(
-                imageVector = Icons.Default.AddCircle,
+                painter = painterResource(id = R.drawable.new_photo),
                 contentDescription = "Restart Photo"
             )
         }
@@ -267,7 +268,7 @@ fun PhotoNotTakenYetActionsButtons(
                 shape = CircleShape,
             ) {
                 Icon(
-                    imageVector = Icons.Default.Phone,
+                    painter = painterResource(id = R.drawable.new_photo),
                     contentDescription = "Capture"
                 )
             }

@@ -31,11 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
@@ -233,7 +235,11 @@ fun TrackPrevisualisation(
                 onClick = onTogglePlayTrack
             ){
                 Icon(
-                    imageVector = if (isPlaying) Icons.Default.Close else Icons.Default.PlayArrow,
+                    painter =
+                        if (isPlaying)
+                            painterResource(R.drawable.pause)
+                        else
+                            painterResource(R.drawable.play),
                     contentDescription = "Play Track"
                 )
             }
