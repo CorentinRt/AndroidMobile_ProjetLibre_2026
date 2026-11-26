@@ -32,7 +32,7 @@ class RegisterViewModel : ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    fun signInWithGoogle(context: Context) {
+    fun signInWithGoogle(context: Context, onGoToHome: () -> Unit) {
         viewModelScope.launch {
             try {
                 val googleIdOption = GetGoogleIdOption.Builder()
@@ -58,6 +58,7 @@ class RegisterViewModel : ViewModel() {
                         provider = Google
                     }
                     isLoggedIn = true
+                    onGoToHome();
                 }
             } catch (e: GetCredentialException) {
                 errorMessage = "Connexion annulée ou impossible"
