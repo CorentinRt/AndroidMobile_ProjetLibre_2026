@@ -26,6 +26,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SeeMoodContent
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SeeMoodScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.SettingsScreen
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens.UserInfosScreen
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.HomeScreenViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareGlobalViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareMusicPlayerViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.RegisterViewModel
@@ -96,7 +97,9 @@ fun MoodSicApp(
             startDestination = startingPage
         ){
             composable(homeRoute){
-                HomeScreen()
+                val homeScreenViewModel: HomeScreenViewModel = viewModel()
+
+                HomeScreen(modifier, homeScreenViewModel)
             }
 
             navigation(

@@ -94,6 +94,8 @@ if (localPropsFile.exists()) {
         implementation("androidx.datastore:datastore-preferences:1.2.1")
         implementation("androidx.media3:media3-exoplayer:1.11.1")
         implementation("androidx.media3:media3-common:1.11.1")
+        implementation("org.maplibre.compose:maplibre-compose:0.12.1")
+        implementation("com.google.android.gms:play-services-location:21.3.0")
 
         implementation(platform("io.github.jan-tennert.supabase:bom:3.9.0"))
         implementation("io.github.jan-tennert.supabase:postgrest-kt")
