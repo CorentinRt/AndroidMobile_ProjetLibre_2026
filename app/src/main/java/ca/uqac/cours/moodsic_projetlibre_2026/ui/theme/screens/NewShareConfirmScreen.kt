@@ -154,8 +154,8 @@ fun NewShareConfirmContent(
                     modifier = Modifier
                         .padding(vertical = 4.dp),
                     text = stringResource(R.string.error_prefix) + errorMessage,
-                    //maxLines = 1,
-                    //overflow = TextOverflow.Ellipsis
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
