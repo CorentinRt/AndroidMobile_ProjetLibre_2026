@@ -24,14 +24,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 import coil.compose.AsyncImage
 
 @Composable
 fun SeeMoodScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    track: DeezerTrack? = null,
+    photoUri: Uri? = null,
+    userName: String = "UserName"
 ) {
     SeeMoodContent(
-        modifier = modifier
+        modifier = modifier,
+        track = track,
+        photoUri = photoUri,
+        userName = userName
     )
 }
 
@@ -50,7 +57,10 @@ fun SeeMoodScreenPreview() {
 fun SeeMoodContent(
     modifier: Modifier = Modifier,
     isPlaying: Boolean = true,
-    onTogglePlayTrack: () -> Unit = {}
+    onTogglePlayTrack: () -> Unit = {},
+    track: DeezerTrack? = null,
+    photoUri: Uri? = null,
+    userName: String = "UserName"
 ){
     Column(
         modifier = modifier
@@ -66,14 +76,14 @@ fun SeeMoodContent(
                     .fillMaxWidth()
                     .height(60.dp),
                 userPhotoUri = null,
-                userName = "UserName"
+                userName = userName
             )
 
             PhotoTakenPrevisualisation(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                photoUri = null
+                photoUri = photoUri
             )
 
             TrackPrevisualisation(
@@ -81,7 +91,7 @@ fun SeeMoodContent(
                     .fillMaxWidth()
                     .height(120.dp)
                     .padding(top = 8.dp),
-                track = null,
+                track = track,
                 isPlaying = isPlaying,
                 onTogglePlayTrack = onTogglePlayTrack
             )
