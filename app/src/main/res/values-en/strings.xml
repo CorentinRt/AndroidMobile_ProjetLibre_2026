@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">Moodsic</string>
 
+    // Error
+    <string name="error_prefix">Error :</string>
+
     // Title Pages Top Bar
     <string name="title_home">Moodsic</string>
     <string name="title_new_share">Mood</string>

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,7 +53,9 @@ fun NewShareConfirmScreen(
     photoUri: Uri? = null,
     selectedTrack: DeezerTrack? = null,
     onConfirmShare: (Uri, DeezerTrack) -> Unit = { _, _ -> },
-    newShareMusicPlayerViewModel: NewShareMusicPlayerViewModel
+    newShareMusicPlayerViewModel: NewShareMusicPlayerViewModel,
+    isUploading: Boolean = false,
+    errorMessage: String? = null
 ) {
     NewShareConfirmContent(
         modifier = modifier,
@@ -66,7 +70,9 @@ fun NewShareConfirmScreen(
             else{
                 newShareMusicPlayerViewModel.play()
             }
-        }
+        },
+        isUploading = isUploading,
+        errorMessage = errorMessage
     )
 }
 
@@ -82,62 +88,104 @@ fun NewShareConfirmScreenPreview() {
 
 @Preview(showBackground = true)
 @Composable
+fun NewShareConfirmScreenLoadingPreview() {
+    ScaffoldApp() { innerPadding ->
+        NewShareConfirmContent(
+            modifier = Modifier.padding(innerPadding),
+            isUploading = true
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 fun NewShareConfirmContent(
     modifier: Modifier = Modifier,
     photoUri: Uri? = null,
     selectedTrack: DeezerTrack? = null,
     isPlaying: Boolean = true,
     onTogglePlayTrack: () -> Unit = {},
-    onConfirmShare: (Uri, DeezerTrack) -> Unit = { _, _ -> }
+    onConfirmShare: (Uri, DeezerTrack) -> Unit = { _, _ -> },
+    isUploading: Boolean = false,
+    errorMessage: String? = null
 ){
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        PhotoTakenPrevisualisation(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .weight(1f),
-            photoUri = photoUri
-        )
+    if (isUploading){
 
-        TrackPrevisualisation(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            track = selectedTrack,
-            isPlaying = isPlaying,
-            onTogglePlayTrack = onTogglePlayTrack
-        )
-
-        CustomAppButton(
-            onClick = {
-                if (photoUri != null && selectedTrack != null){
-                    onConfirmShare(
-                        photoUri,
-                        selectedTrack
-                    )
-                }
-            },
-            modifier = Modifier
-                .size(80.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onSecondary
-            ),
-            shape = CircleShape
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = "Confirm Share Button"
+        Column(
+            modifier = modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ){
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .aspectRatio(1f)
             )
         }
-
-        Spacer(Modifier.height(8.dp))
     }
+    else
+    {
+        Column(
+            modifier = modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            PhotoTakenPrevisualisation(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .weight(1f),
+                photoUri = photoUri
+            )
+
+            TrackPrevisualisation(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                track = selectedTrack,
+                isPlaying = isPlaying,
+                onTogglePlayTrack = onTogglePlayTrack
+            )
+
+            if (errorMessage != null){
+                Text(
+                    modifier = Modifier
+                        .padding(vertical = 4.dp),
+                    text = stringResource(R.string.error_prefix) + errorMessage,
+                    //maxLines = 1,
+                    //overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            CustomAppButton(
+                onClick = {
+                    if (photoUri != null && selectedTrack != null){
+                        onConfirmShare(
+                            photoUri,
+                            selectedTrack
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .size(80.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                shape = CircleShape
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Confirm Share Button"
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+        }
+    }
+
 }
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 100)

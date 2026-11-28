@@ -3,6 +3,7 @@ package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.navigation
 import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.HomeScreenView
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareGlobalViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.NewShareMusicPlayerViewModel
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.RegisterViewModel
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.viewmodels.UploadMoodViewModel
 
 @Preview(showBackground = true)
 @Composable
@@ -163,6 +165,32 @@ fun MoodSicApp(
 
                 composable(newShareConfirmRoute){ backStackEntry ->
 
+                    val uploadMoodViewModel: UploadMoodViewModel = viewModel(
+                        factory = viewModelFactory {
+                            initializer {
+                                UploadMoodViewModel(
+                                    context = context.applicationContext
+                                )
+                            }
+                        }
+                    )
+
+                    val isUploaded = uploadMoodViewModel.isUploaded.value
+                    val isLoading = uploadMoodViewModel.isLoading.value
+                    val errorMessage = uploadMoodViewModel.errorMessage.value
+
+                    LaunchedEffect(
+                        isUploaded
+                    ) {
+                        if (isUploaded) {
+                            navController.navigate(homeRoute) {
+                                popUpTo(newShareRouteSubGraph) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+
                     val shareGraphEntry = remember(backStackEntry) {
                         navController.getBackStackEntry(newShareRouteSubGraph)
                     }
@@ -183,13 +211,19 @@ fun MoodSicApp(
                         selectedTrack = newShareGlobalViewModel.currentSelectedTrack,
                         onConfirmShare = { photoUri, selectedTrack ->
 
-                            navController.navigate(homeRoute){
-                                popUpTo(newShareRouteSubGraph){
-                                    inclusive = true
-                                }
+                            val location = newShareGlobalViewModel.currentPhotoLocation
+
+                            if (location != null) {
+                                uploadMoodViewModel.uploadMood(
+                                    photoUri = photoUri,
+                                    track = selectedTrack,
+                                    location = location
+                                )
                             }
                         },
-                        newShareMusicPlayerViewModel = newShareMusicPlayerViewModel
+                        newShareMusicPlayerViewModel = newShareMusicPlayerViewModel,
+                        isUploading = isLoading,
+                        errorMessage = errorMessage
                     )
                 }
             }
