@@ -103,4 +103,6 @@ if (localPropsFile.exists()) {
         implementation("io.github.jan-tennert.supabase:storage-kt")
         implementation("io.github.jan-tennert.supabase:realtime-kt")
         implementation("io.ktor:ktor-client-android:3.6.0")
+
+        implementation("com.google.android.gms:play-services-location:21.3.0")
     }

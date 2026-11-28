@@ -126,8 +126,9 @@ fun MoodSicApp(
                     newShareMusicPlayerViewModel.pause()
 
                     NewShareScreen(
-                        onNewShareTakePhotoConfirmed = {
-                            newShareGlobalViewModel.defineCurrentPhotoTakenUri(it)
+                        onNewShareTakePhotoConfirmed = { uri, location ->
+                            newShareGlobalViewModel.defineCurrentPhotoTakenUri(uri)
+                            newShareGlobalViewModel.defineCurrentPhotoLocation(location)
                             navController.navigate(newShareChooseMusicRoute)
                         }
                     )

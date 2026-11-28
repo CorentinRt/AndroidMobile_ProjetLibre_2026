@@ -1,5 +1,7 @@
 package ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -42,22 +44,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import ca.uqac.cours.moodsic_projetlibre_2026.R
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.components.ScaffoldApp
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.datas.mood.MoodLocation
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.CustomAppButton
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.utilities.getCurrentLocation
 import coil.compose.AsyncImage
 import java.io.File
 
 @Composable
 fun NewShareScreen(
     modifier: Modifier = Modifier,
-    onNewShareTakePhotoConfirmed: (Uri) -> Unit = {}
+    onNewShareTakePhotoConfirmed: (Uri, MoodLocation?) -> Unit = {_, _ -> }
 ) {
     NewShareContent(
         modifier = modifier,
-        onNewShareTakePhotoConfirmed = {
-            onNewShareTakePhotoConfirmed(it)
+        onNewShareTakePhotoConfirmed = { uri, photoLocation ->
+            onNewShareTakePhotoConfirmed(uri, photoLocation)
         }
     )
 }
@@ -76,12 +81,34 @@ fun NewShareScreenPreview() {
 @Composable
 fun NewShareContent(
     modifier: Modifier = Modifier,
-    onNewShareTakePhotoConfirmed: (Uri) -> Unit = {}
+    onNewShareTakePhotoConfirmed: (Uri, MoodLocation?) -> Unit = {_, _ -> }
 ) {
     val context = LocalContext.current
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     var cameraUri by remember { mutableStateOf<Uri?>(null) }
+    var photoLocation by remember { mutableStateOf<MoodLocation?>(null) }
+
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+
+            val granted =
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                        permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+
+            if (granted) {
+                getCurrentLocation(context) { latitude, longitude ->
+
+                    if (latitude != null && longitude != null) {
+                        photoLocation = MoodLocation(
+                            latitude = latitude,
+                            longitude = longitude)
+                    }
+
+                }
+            }
+        }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -89,6 +116,33 @@ fun NewShareContent(
 
         if (success) {
             photoUri = cameraUri
+
+            photoLocation = null
+
+            val fineGranted = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
+            val coarseGranted = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (fineGranted || coarseGranted) {
+                getCurrentLocation(context) { lat, lon ->
+                    if (lat != null && lon != null) {
+                        photoLocation = MoodLocation(lat, lon)
+                    }
+                }
+            } else {
+                locationPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
         }
     }
 
@@ -136,12 +190,13 @@ fun NewShareContent(
                 onRestartPhotoClicked = {
                     photoUri?.let { uri ->
                         photoUri = null
+                        photoLocation = null
                         openCamera()
                     }
                 },
                 onConfirmPhotoClicked = {
                     photoUri?.let { uri ->
-                        onNewShareTakePhotoConfirmed(uri)
+                        onNewShareTakePhotoConfirmed(uri, photoLocation)
                     }
                 }
             )

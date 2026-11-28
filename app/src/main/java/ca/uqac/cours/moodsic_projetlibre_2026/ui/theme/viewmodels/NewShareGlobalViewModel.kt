@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.datas.mood.MoodLocation
 import ca.uqac.cours.moodsic_projetlibre_2026.ui.theme.deezer.DeezerTrack
 
 class NewShareGlobalViewModel: ViewModel() {
@@ -15,6 +16,9 @@ class NewShareGlobalViewModel: ViewModel() {
     var currentSelectedTrack: DeezerTrack? by mutableStateOf(null)
         private set
 
+    var currentPhotoLocation by mutableStateOf<MoodLocation?>(null)
+        private set
+
     fun defineCurrentPhotoTakenUri(photoTakenUri: Uri){
         this.currentPhotoTakenUri = photoTakenUri
     }
@@ -23,4 +27,7 @@ class NewShareGlobalViewModel: ViewModel() {
         this.currentSelectedTrack = selectedTrack
     }
 
+    fun defineCurrentPhotoLocation(location: MoodLocation?) {
+        this.currentPhotoLocation = location
+    }
 }
